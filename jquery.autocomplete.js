@@ -1,40 +1,55 @@
 $.fn.autocomplete = function(params) {
     var autocomplete = this;
-    this.element = $(this);                
-    this.menu = this.element.siblings('.autocomplete');
 
     var defaults = {
+        appendTo: null,
         minLength: 1,
         delay: 300,
         autoFocus: true,
+        auto: true,
         cache: true,
         itemClass: 'li.ui-menu-item',
+        position: {
+            my: "left top",
+            at: "left bottom",
+            collision: "none"
+        },
         template: 
             '{{each data as value}}' +
             '<li class="ui-menu-item">{{value}}</li>' +
             '{{/each}}',
-        source: null,//function(request, response){var data = ""; response(data);} 或者 ['a', 'b', 'c'] 或者 url
-        select: null,// function(active){} active 是选中的jQuery对象
-        close: null// 关闭回调
+        source: null,
+        select: null,
+        close: null
     }
-    for (var param in params) {
-        defaults[param] = params[param];
-    }
-    this.options = defaults;
-
-    // 缓存
-    this.cache = {};
-    this.cacheKey = null;
+    $.extend(defaults, params);
     
     // 组件初始化
     autocomplete.init = function() {
         var _this = this;
 
+        // 可配置项
+        this.options = defaults;
+
+        // element, menu
+        this.element = $(this)
+            .addClass("ui-autocomplete-input")
+            .attr("autocomplete", "off");
+        this.menu = $('<ul>')
+            .addClass('ui-autocomplete')
+            .appendTo(this.options.appendTo || this.element.parent())
+            .hide();
+
+
+        // 元素类型取值方法
         var nodeName = this.element.get(0).nodeName.toLowerCase(),
             isTextarea = nodeName === "textarea",
             isInput = nodeName === "input";
-
         this.valueMethod = this.element[isTextarea || isInput ? "val" : "text"];
+
+        // 缓存
+        this.cache = {};
+        this.cacheKey = null;
 
         // 绑定事件
         this.element.on({
@@ -66,7 +81,8 @@ $.fn.autocomplete = function(params) {
                         break;
                     default:
                         // Input输入值改变后，触发搜索事件
-                        _this.searchTimeout(event);
+                        if(_this.options.auto)
+                            _this.searchTimeout(event);
                         break;
                 }
             },
@@ -74,12 +90,16 @@ $.fn.autocomplete = function(params) {
                 _this.close(event);
             },
             blur: function(event) {
-                setTimeout(function(){
+                setTimeout(function() {
                     _this.close(event);
                 }, 300);
+            },
+            search: function(event) {
+                _this.searchTimeout(event);
             }
         });
 
+        // 初始化资源
         this.initSource();
     };
 
@@ -155,9 +175,8 @@ $.fn.autocomplete = function(params) {
         if (value.length < this.options.minLength) {
             return; // this.close(event);
         }
-         
 
-        if (this.trigger("search", event) === false) {
+        if (this.trigger("searching", event) === false) {
             return;
         }
         if(this.options.cache) {
@@ -177,16 +196,21 @@ $.fn.autocomplete = function(params) {
 
     // 回调数据生成菜单
     autocomplete.response = function(content) {
-
+        // 缓存
         if(this.options.cache) {
             this.cache[this.cacheKey] = content;
-        }        
+        }
+
         if($.isArray(content)) {
             content = {'data': content};
         }
         var render = template.compile(this.options.template);
         var html = render(content);
+
         this.menu.html(html).show();
+        // this.menu.position($.extend({
+        //     of: this.element
+        // }, this.options.position));
         
         if (this.options.autoFocus) {
             this.active = this.menu.find(this.options.itemClass).first();        
@@ -200,26 +224,8 @@ $.fn.autocomplete = function(params) {
         })
     };
 
-    // 关闭
-    autocomplete.close = function(event ) {
-        if (this.menu.is(":visible")) {
-            if(typeof this.options.close === 'function')
-                this.options.close();
-            this.menu.hide();
-            this.active = null;
-            this.trigger("close", event);
-        }
-    };
-    // 选中事件处理
-    autocomplete.select = function(event) {        
-        if(this.options.select)
-            this.options.select(this.active);
-
-        this.close();
-    }
     // 移动数据项
     autocomplete.move = function(direction, event ) {
-
         if (!this.menu.is( ":visible")) {
             this.search(null, event );
             return;
@@ -229,7 +235,7 @@ $.fn.autocomplete = function(params) {
         event.preventDefault();
 
         // 首尾元素移动后关闭菜单
-        if(this.active && !this.active[direction + 'All']().length) {
+        if(this.active && !this.active[direction + 'All'](this.options.itemClass).length) {
             this.close();
             return;
         }
@@ -252,6 +258,24 @@ $.fn.autocomplete = function(params) {
         this.active = next;
     }
 
-    this.init();
+    // 选中事件处理
+    autocomplete.select = function(event) {        
+        if(this.options.select)
+            this.options.select(this.active);
 
+        this.close();
+    }
+
+    // 关闭
+    autocomplete.close = function(event ) {
+        if (this.menu.is(":visible")) {
+            this.menu.hide();
+            this.active = null;
+            if(typeof this.options.close === 'function')
+                this.options.close();
+            this.trigger("closed", event);
+        }
+    };
+    // 初始化插件
+    this.init();
 }
