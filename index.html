@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>autocomplete</title>
+	<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script type="text/javascript" src="jquery.autocomplete.js"></script>
+	<script type="text/javascript" src="http://aui.github.io/artTemplate/dist/template.js"></script>
+	<script type="text/javascript">
+	$(function(){
+		$('#Search_Input').autocomplete({
+            // template: 
+            //     '{{each data as v}}' +
+            //     '<li class="ui-menu-item" data-id="{{v.goods_id}}" data-album="{{v.album_image}}"><img src="/{{v.album_image}}">{{v.name}}</li>' +
+            //     '{{/each}}',
+            source: ['a', 'b', 'ab', 'ac', 'ad'],
+            // source: function(request, response) {
+            //     $.getJSON("<?= Url::to(['goods/search-goods']) ?>", {keywords: request}, function(json) {
+            //         if(json.code == 0 && json.data.length > 0) {
+            //             response(json);
+            //         }
+            //     })
+            // },
+            select: function(active) {
+                alert("selected html: " + active.html());
+            }
+		});
+	});
+	</script>
+	<style>
+		.ui-autocomplete {
+            position: absolute;
+            background: #fff;
+            overflow: hidden;
+            display: none;
+            z-index: 9999;
+        }
+        .ui-autocomplete li {padding: 10px; border: 1px solid #eee; list-style: none;}
+        .ui-autocomplete img {width: 50px; height: 50px;}
+        .ui-autocomplete .active {background: #ddd;}
+	</style>
+</head>
+<body>
+    <div style="width:800px; margin: 100px auto;">
+    	Input: <input id="Search_Input" type="text">
+    </div>
+</body>
+</html>
