@@ -14,8 +14,8 @@
             //     '<li class="ui-menu-item" data-id="{{v.goods_id}}" data-album="{{v.album_image}}"><img src="/{{v.album_image}}">{{v.name}}</li>' +
             //     '{{/each}}',
             source: ['a', 'b', 'ab', 'ac', 'ad'],
-            // source: function(request, response) {
-            //     $.getJSON("<?= Url::to(['goods/search-goods']) ?>", {keywords: request}, function(json) {
+            // source: function(value, response) {
+            //     $.getJSON("<?= Url::to(['goods/search-goods']) ?>", {keywords: value}, function(json) {
             //         if(json.code == 0 && json.data.length > 0) {
             //             response(json);
             //         }
