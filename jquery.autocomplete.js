@@ -136,19 +136,19 @@ $.fn.autocomplete = function(params) {
                 }
                 return temp;
             }
-            this.source = function(request, response) {
-                array = filter(array, request);
+            this.source = function(value, response) {
+                array = filter(array, value);
                 response(array);
             };
         } else if (typeof this.options.source === "string") {
             url = this.options.source;
-            this.source = function(request, response) {
+            this.source = function(value, response) {
                 if (that.xhr) {
                     that.xhr.abort();
                 }
                 that.xhr = $.ajax({
                     url: url,
-                    data: {value: request},
+                    data: {value: value},
                     dataType: "json",
                     success: function(data) {
                         response(data);
