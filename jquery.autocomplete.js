@@ -51,7 +51,7 @@ $.fn.autocomplete = function(params) {
         this.cache = {};
         this.cacheKey = null;
 
-        // 绑定事件
+        // 绑定数据事件
         this.element.on({
             keydown: function(event) {
                 switch (event.keyCode) {                
@@ -98,6 +98,15 @@ $.fn.autocomplete = function(params) {
                 _this.searchTimeout(event);
             }
         });
+        
+        // 绑定点击事件
+        this.menu.on('mouseover', this.options.itemClass, function(event) {
+            _this.focus($(this), event);
+        });
+        this.menu.on('click', this.options.itemClass, function(event) {
+            _this.focus($(this), event);
+            _this.select(event);
+        });
 
         // 初始化资源
         this.initSource();
@@ -122,11 +131,10 @@ $.fn.autocomplete = function(params) {
 
     // 初始化资源
     autocomplete.initSource = function() {
-        var array, url,
+        var source = this.options.source,
             that = this;
+        // source 是数组，则在数组中查询匹配的项
         if ($.isArray(this.options.source)) {
-            array = this.options.source;
-
             function filter(array, value) {
                 temp = [];
                 for(var i = 0, len = array.length; i < len; i++) {
@@ -137,29 +145,12 @@ $.fn.autocomplete = function(params) {
                 return temp;
             }
             this.source = function(value, response) {
-                array = filter(array, value);
-                response(array);
+                response(filter(source, value));
             };
-        } else if (typeof this.options.source === "string") {
-            url = this.options.source;
-            this.source = function(value, response) {
-                if (that.xhr) {
-                    that.xhr.abort();
-                }
-                that.xhr = $.ajax({
-                    url: url,
-                    data: {value: value},
-                    dataType: "json",
-                    success: function(data) {
-                        response(data);
-                    },
-                    error: function() {
-                        response([]);
-                    }
-                });
-            };
-        } else {
-            this.source = this.options.source;
+        } 
+        // source 是方法
+        else {
+            this.source = source;
         }
     };
     // 获取Val
@@ -216,12 +207,6 @@ $.fn.autocomplete = function(params) {
             this.active = this.menu.find(this.options.itemClass).first();        
             this.active.addClass('active');
         }
-        // 绑定点击事件
-        var _this = this;
-        this.menu.find(this.options.itemClass).click(function(event) {
-            _this.focus($(this));
-            _this.select(event);
-        })
     };
 
     // 移动数据项
