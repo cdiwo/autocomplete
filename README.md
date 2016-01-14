@@ -9,14 +9,13 @@
 <script src="jquery.autocomplete.js"></script>
 ```
 
-
 ###HTML代码
 ```html
 <input id="Search_Input" type="text">
 ```
 
 ###Javascript代码
-```
+```js
 $('#element').autocomplete(params);
 ```
 
