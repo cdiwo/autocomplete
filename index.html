@@ -16,7 +16,7 @@
             //     '{{/each}}',
             // value: 输入值， response：回调，将json值输出，json格式[默认template需包含data属性]：{code: 0, data: [{"goods_id": 1, "name": "test name"}]}
             // source: function(value, response) {
-            //     $.getJSON("<?= Url::to(['goods/search-goods']) ?>", {keywords: value}, function(json) {
+            //     $.getJSON("/api/goods/search", {keywords: value}, function(json) {
             //         if(json.code == 0 && json.data.length > 0) {
             //             response(json);
             //         }
@@ -24,8 +24,11 @@
             // },
             source: ['a', 'b', 'ab', 'ac', 'ad'],
             // obj: 选中项jquery对象          
-            select: function(obj) {
+            onSelect: function(obj) {
                 alert("selected html: " + obj.html());
+            },
+            onColse: function() {
+                console.log('关闭了')
             }
         });
     });
