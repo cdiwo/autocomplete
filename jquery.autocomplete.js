@@ -51,7 +51,7 @@ $.fn.autocomplete = function(params) {
         this.cache = {};
         this.cacheKey = null;
 
-        // 绑定数据事件
+        // 绑定控件事件
         this.element.on({
             keydown: function(event) {
                 switch (event.keyCode) {                
@@ -99,11 +99,10 @@ $.fn.autocomplete = function(params) {
             }
         });
         
-        // 绑定点击事件
+        // 绑定列表项事件
         this.menu.on('mouseover', this.options.itemClass, function(event) {
             _this.focus($(this), event);
-        });
-        this.menu.on('click', this.options.itemClass, function(event) {
+        }).on('click', this.options.itemClass, function(event) {
             _this.focus($(this), event);
             _this.select(event);
         });
