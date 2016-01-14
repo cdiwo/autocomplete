@@ -137,7 +137,7 @@ data: 返回数据
         collision: "none"
     }
     </td>
-    <td>并行上传量，在进行多文件同时上传时的并发量</td>
+    <td>数据项定位方式</td>
 </tr>
 <tr>
     <td>template</td>
