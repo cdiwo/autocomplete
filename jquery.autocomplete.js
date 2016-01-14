@@ -18,9 +18,9 @@ $.fn.autocomplete = function(params) {
             '{{each data as value}}' +
             '<li class="ui-menu-item">{{value}}</li>' +
             '{{/each}}',
-        source: null,
-        select: null,
-        close: null
+        source: [],
+        onSelect: null,
+        onClose: null
     }
     $.extend(defaults, params);
     
@@ -51,7 +51,7 @@ $.fn.autocomplete = function(params) {
         this.cache = {};
         this.cacheKey = null;
 
-        // 绑定控件事件
+        // 绑定数据事件
         this.element.on({
             keydown: function(event) {
                 switch (event.keyCode) {                
@@ -244,9 +244,8 @@ $.fn.autocomplete = function(params) {
 
     // 选中事件处理
     autocomplete.select = function(event) {        
-        if(this.options.select)
-            this.options.select(this.active);
-
+        // if(typeof this.options.onSelect === 'function')
+        this.options.onSelect(this.active);
         this.close();
     }
 
@@ -255,8 +254,8 @@ $.fn.autocomplete = function(params) {
         if (this.menu.is(":visible")) {
             this.menu.hide();
             this.active = null;
-            if(typeof this.options.close === 'function')
-                this.options.close();
+            // if(typeof this.options.onClose === 'function')
+            this.options.onClose();
             this.trigger("closed", event);
         }
     };
