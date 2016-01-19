@@ -25,7 +25,7 @@ Example：
 $('#Search_Input').autocomplete({
     source: ['a', 'b', 'ab', 'ac', 'ad'],
     // obj: 选中项jquery对象
-    select: function(obj) {
+    onSelect: function(obj) {
         alert("selected html: " + obj.html());
     }
 });
@@ -49,7 +49,7 @@ $('#Search_Input').autocomplete({
         })
     },
     // obj: 选中项jquery对象
-    select: function(obj) {
+    onSelect: function(obj) {
         alert("selected html: " + obj.html());
     }
 });
