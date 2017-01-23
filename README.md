@@ -193,8 +193,5 @@ data: 返回数据
 ### 1.1.0 - 2016/01/13
 1. 移除params.source可配置为url的功能
 
-### 1.1.0 - 2016/01/13
-1. 移除params.source可配置为url的功能
-
 ### 1.0.0 - 2015/11/19
 1. 提交AutoComplete.js
