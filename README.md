@@ -33,11 +33,8 @@ $('#Search_Input').autocomplete({
 * 使用远程源数据+自定义模板搜索
 ```js
 $('#Search_Input').autocomplete({
-    // arttemplate 模板
-    template: 
-        '{{each data as v}}' +
-        '<li class="ui-menu-item" data-id="{{v.goods_id}}>{{v.name}}</li>' +
-        '{{/each}}',
+    // arttemplate 模板, 可使用item、index变量
+    template: '<li class="ui-menu-item" data-id="{{item.goods_id}}>{{item.name}}</li>',
     // value: 输入值， 
     // response：回调，将json值输出，
     // json格式[默认template需包含data属性]：{code: 0, data: [{"goods_id": 1, "name": "test name"}]}
@@ -142,8 +139,8 @@ data: 返回数据
 <tr>
     <td>template</td>
     <td>string</td>
-    <td></td>
-    <td>arttemplate模板字符串</td>
+    <td>"<li class="ui-menu-item">{{item}}</li>"</td>
+    <td>arttemplate模板字符串, 可使用item、index变量</td>
 </tr>
 <tr>
   <th colspan="4">数据来源（Source)</th>
@@ -182,3 +179,22 @@ data: 返回数据
 
 </tbody>
 </table>
+
+### 更新日志
+
+### 1.2.0 -2017/01/23
+1. 更新options中template配置方式，只填写li内容，可用变量改为item、index
+2. 更新使用说明文档及事例代码
+
+### 1.1.1 - 2016/01/14
+1. 调整回调函数名称
+2. 新增使用说明文档
+
+### 1.1.0 - 2016/01/13
+1. 移除params.source可配置为url的功能
+
+### 1.1.0 - 2016/01/13
+1. 移除params.source可配置为url的功能
+
+### 1.0.0 - 2015/11/19
+1. 提交AutoComplete.js

@@ -3,17 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>autocomplete</title>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-2.2.0.min.js"></script>
-    <script type="text/javascript" src="http://aui.github.io/artTemplate/dist/template.js"></script>
+    <script type="text/javascript" src="lib/jquery-2.2.0.min.js"></script>
+    <script type="text/javascript" src="lib/arttemplate.js"></script>
     <script type="text/javascript" src="jquery.autocomplete.js"></script>
     <script type="text/javascript">
     $(function(){
         $('#Search_Input').autocomplete({
-            // arttemplate 模板
-            // template: 
-            //     '{{each data as v}}' +
-            //     '<li class="ui-menu-item" data-id="{{v.goods_id}}" data-album="{{v.album_image}}"><img src="/{{v.album_image}}">{{v.name}}</li>' +
-            //     '{{/each}}',
+            // arttemplate 模板, 可使用item、index变量
+            // template: '<li class="ui-menu-item" data-id="{{item.goods_id}}" data-album="{{item.album_image}}"><img src="/{{item.album_image}}">{{item.name}}</li>',
             // value: 输入值， response：回调，将json值输出，json格式[默认template需包含data属性]：{code: 0, data: [{"goods_id": 1, "name": "test name"}]}
             // source: function(value, response) {
             //     $.getJSON("/api/goods/search", {keywords: value}, function(json) {
@@ -26,9 +23,6 @@
             // obj: 选中项jquery对象          
             onSelect: function(obj) {
                 alert("selected html: " + obj.html());
-            },
-            onColse: function() {
-                console.log('关闭了')
             }
         });
     });
@@ -41,9 +35,9 @@
             display: none;
             z-index: 9999;
         }
-        .ui-autocomplete li {padding: 10px; border: 1px solid #eee; list-style: none;}
-        .ui-autocomplete img {width: 50px; height: 50px;}
-        .ui-autocomplete .active {background: #ddd;}
+        .ui-autocomplete li { padding: 10px; border: 1px solid #eee; list-style: none; }
+        .ui-autocomplete img { width: 50px; height: 50px;}
+        .ui-autocomplete .active { background: #555; color: white; }
     </style>
 </head>
 <body>
